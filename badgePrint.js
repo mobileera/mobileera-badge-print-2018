@@ -6,57 +6,90 @@ function printParticipant (doc, participant, side) {
 
   var height = doc.page.height
   var width = doc.page.width - 20
-  var margin = 10
+  var margin = 15
 
   var sessionInfo = participant.sessionInfo
   var categoryName = participant.categoryName
   var ticketName = participant.ticketName
+  var image = participant.image
 
   if ((categoryName === 'Speaker' && sessionInfo && side === 'back') || (categoryName === 'Trainee' && side === 'back')) {
     if (categoryName === 'Speaker') {
-      doc.image('images/badge-print2.png', 0, 0, {
+
+      // Speaker back side
+
+      doc.image(image, 0, 0, {
         height,
         width: doc.page.width
       })
 
-      var talkTitle = sessionInfo.title;
-      var talkTime = sessionInfo.date + ", " + sessionInfo.startTime;
-      var track = sessionInfo.track;
+      var talkTitle = sessionInfo.title
+      var talkTime = sessionInfo.date + ', ' + sessionInfo.startTime
+      var track = sessionInfo.track
+
+      doc.font('fonts/roboto-v15-latin_latin-ext-500.ttf')
+        .fontSize(36)
+        .fillColor('#000000')
+      if (doc.widthOfString(participant.fullName) > width) {
+        doc.fontSize(30)
+        if (doc.widthOfString(participant.fullName) > width) {
+          doc.fontSize(26)
+        }
+      }
+
+      doc
+        .text(participant.fullName, margin, 163, {
+          align: 'center',
+          height,
+        width})
 
       if (talkTitle) {
         doc.font('fonts/roboto-v15-latin_latin-ext-500.ttf')
           .fontSize(24)
           .fillColor('#000000')
         if (doc.widthOfString(talkTitle) > width) {
-          doc.fontSize(18)
+          doc.fontSize(16)
         }
-        doc.text(talkTitle, margin, 190, {
+        doc.text(talkTitle, margin, 220, {
           align: 'center',
           height,
         width})
       }
 
       if (talkTime) {
-        doc.font('fonts/roboto-v15-latin_latin-ext-regular.ttf')
-          .fontSize(22)
-          .fillColor('#CBB714')
-          .text(talkTime, {
-            align: 'center',
+        doc.font('fonts/roboto-v15-latin_latin-ext-500.ttf')
+          .fontSize(17)
+          .fillColor('#2d57a5')
+          .text(talkTime, margin, 293, {
+            align: 'left',
             height,
           width})
       }
 
       if (track) {
         doc.font('fonts/roboto-v15-latin_latin-ext-regular.ttf')
-          .fontSize(18)
-          .fillColor('#00aac6')
+          .fontSize(22)
+          .fillColor('#831641')
           .text(track, {
-            align: 'center',
+            align: 'left',
             height,
           width})
       }
+
+      if (participant.twitter) {
+        doc.font('fonts/roboto-v15-latin_latin-ext-500.ttf')
+          .fontSize(18)
+          .fillColor('#831641')
+        doc.text(participant.twitter, 163, 301, {
+          align: 'left',
+          height,
+        width})
+      }
     } else {
-      doc.image('images/badge-print.png', 0, 0, {
+
+      // Trainee back side
+
+      doc.image(image, 0, 0, {
         height,
         width: doc.page.width
       })
@@ -92,14 +125,14 @@ function printParticipant (doc, participant, side) {
     }
 
     doc.font('fonts/roboto-v15-latin_latin-ext-regular.ttf')
-      .fontSize(18)
+      .fontSize(24)
       .fillColor('#FFFFFF')
-    doc.text(participant.categoryName, margin, 400, {
-      align: 'center',
+    doc.text(participant.categoryName, margin, 380, {
+      align: 'left',
       height,
     width})
   } else {
-    doc.image(participant.image, 0, 0, {
+    doc.image(image, 0, 0, {
       height,
       width: doc.page.width
     })
@@ -109,7 +142,7 @@ function printParticipant (doc, participant, side) {
       qr.imageSync(participant.contactCard, {
         type: 'png'
       }),
-      (doc.page.width - 210 - qrWidth) / 2, height - 100 - qrWidth, {
+      (doc.page.width - 175 - qrWidth) / 2, height - 85 - qrWidth, {
         width: qrWidth
       })
 
@@ -124,41 +157,41 @@ function printParticipant (doc, participant, side) {
     }
 
     doc
-      .text(participant.fullName, margin, 190, {
+      .text(participant.fullName, margin, 163, {
         align: 'center',
         height,
       width})
     if (participant.company) {
-      doc.font('fonts/roboto-v15-latin_latin-ext-regular.ttf')
-        .fontSize(14)
-        .fillColor('#00aac6')
+      doc.font('fonts/roboto-v15-latin_latin-ext-500.ttf')
+        .fontSize(18)
+        .fillColor('#2d57a5')
       if (doc.widthOfString(participant.company) > width) {
         doc.fontSize(12)
         if (doc.widthOfString(participant.company) > width) {
           doc.fontSize(10)
         }
       }
-      doc.text(participant.company, {
+      doc.text(participant.company, margin, 230, {
         align: 'center',
         height,
       width})
     }
 
     if (participant.twitter) {
-      doc.font('fonts/roboto-v15-latin_latin-ext-300.ttf')
-        .fontSize(24)
-        .fillColor('#CBB714')
-      doc.text(participant.twitter, 100, 285, {
+      doc.font('fonts/roboto-v15-latin_latin-ext-500.ttf')
+        .fontSize(18)
+        .fillColor('#831641')
+      doc.text(participant.twitter, 163, 301, {
         align: 'left',
         height,
       width})
     }
 
     doc.font('fonts/roboto-v15-latin_latin-ext-regular.ttf')
-      .fontSize(18)
+      .fontSize(24)
       .fillColor('#FFFFFF')
-    doc.text(participant.crewType || participant.categoryName, margin, 400, {
-      align: 'center',
+    doc.text(participant.crewType || participant.categoryName, margin, 380, {
+      align: 'left',
       height,
     width})
   }

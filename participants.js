@@ -3,10 +3,10 @@ var _ = require('lodash')
 var moment = require('moment')
 
 var IMAGES = {
-  'Attendee': 'images/badge-print.png',
-  'Trainee': 'images/badge-print4.png',
+  'Attendee': 'images/badge-print3.png',
+  'Trainee': 'images/badge-print3.png',
   'Speaker': 'images/badge-print3.png',
-  'Crew': 'images/badge-print2.png'
+  'Crew': 'images/badge-print.png'
 }
 
 var TRACKS = [
@@ -428,7 +428,7 @@ function participants (filename, filterOnType, startingDate, programData) {
     return a.fullName.localeCompare(b.fullName)
   })
 
-  // console.log(JSON.stringify(STATS, undefined, 2))
+   console.log(JSON.stringify(STATS, undefined, 2))
 
   // console.log('ONLY workshop attendees:')
   // console.log(JSON.stringify(_.difference(workshopTicketOwners, conferenceTicketOwners), undefined, 2))
